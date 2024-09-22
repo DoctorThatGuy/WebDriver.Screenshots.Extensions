@@ -80,7 +80,7 @@ namespace WDSE.Decorators
                     driver.ScrollTo(elementWithScrollBar,
                         windowHeight * i);
                     WaitAfterScrolling();
-                    var screenshot = NestedStrategy.MakeScreenshot(driver);
+                    var screenshot = (MagickImage)NestedStrategy.MakeScreenshot(driver);
                     if (screenshot != null)
                     {
                         imagesCollection.Add(screenshot);
@@ -95,9 +95,9 @@ namespace WDSE.Decorators
                     WaitAfterScrolling();
                     var afterScrollingScrollLocation = driver.GetCurrentScrollLocation(elementWithScrollBar);
                     var realFooterSize = afterScrollingScrollLocation - currentScrollLocation;
-                    var screenshot = new MagickImage(NestedStrategy.MakeScreenshot(driver));
-                    var footerImage = screenshot.Clone(0, screenshot.Height - realFooterSize, screenshot.Width,
-                        realFooterSize);
+
+                    var screenshot = new MagickImage((MagickImage)NestedStrategy.MakeScreenshot(driver));
+                    var footerImage = screenshot.Clone(0, (int)(screenshot.Height - realFooterSize), screenshot.Width, (uint)realFooterSize);
                     imagesCollection.Add(footerImage);
                 }
 

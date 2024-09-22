@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using Allure.Commons;
@@ -73,13 +74,22 @@ namespace WDSETests
         protected void CompareAndTest(byte[] actual, Bitmap expected)
         {
             var image = WdseImageComparer.CompareAndGetImageIfNotSame(actual.ToMagickImage(),
-                new MagickImage(expected));
+                new MagickImage(TransformImageToByte(expected)));
             if (image == null) return;
             AllureLifecycle.Instance.AddAttachment("Difference", AllureLifecycle.AttachFormat.ImagePng, image);
             AllureLifecycle.Instance.AddAttachment("Actual", AllureLifecycle.AttachFormat.ImagePng, actual);
             AllureLifecycle.Instance.AddAttachment("Expected", AllureLifecycle.AttachFormat.ImagePng,
-                new MagickImage(expected).ToByteArray());
+                new MagickImage(TransformImageToByte(expected)).ToByteArray());
             throw new AssertionException("Test failed");
+        }
+
+        private byte[] TransformImageToByte(Image img)
+        {
+            using (var stream = new MemoryStream())
+            {
+                img.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
+            }
         }
     }
 }

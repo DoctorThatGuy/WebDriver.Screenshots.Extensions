@@ -19,13 +19,9 @@ namespace WDSE.Compare
                 {
                     using (var imgWithDiff = new MagickImage())
                     {
-                        var compareSettings = new CompareSettings
-                        {
-                            HighlightColor = new MagickColor(MagickColor.FromRgb(255,0,0)),
-                            Metric = ErrorMetric.Absolute
-                        };
                         image1.ColorFuzz = new Percentage(3);
-                        var doubleRes = image1.Compare(image2, compareSettings, imgWithDiff);
+
+                        var doubleRes = image1.Compare(image2, ErrorMetric.Absolute);
                         yield return doubleRes;
                         yield return new MagickImage(imgWithDiff);
                     }

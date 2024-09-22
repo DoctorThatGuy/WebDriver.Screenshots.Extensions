@@ -14,8 +14,8 @@ namespace WDSE.Helpers
             return new MagickGeometry(
                 x: rectangle.X,
                 y: rectangle.Y,
-                width: rectangle.Width,
-                height: rectangle.Height
+                width: (uint)rectangle.Width,
+                height: (uint)rectangle.Height
                 );
         }
 
